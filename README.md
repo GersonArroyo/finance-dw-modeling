@@ -1,0 +1,116 @@
+# Fintech Data Warehouse - Dimensional Modeling
+
+## 1. Context
+This project simulates a Data Warehouse for a fintech company that manages customer accounts and financial transactions.
+
+The goal is to design a dimensional model that supports analytical queries related to transactions and fraud detection.
+
+---
+
+## 1.1 Datasets
+https://www.kaggle.com/datasets/kartik2112/fraud-detection
+
+Attention: this dataset was originally created for ML training purposes by kartik2112. For this project, the train/test split was disregarded as it is irrelevant for dimensional modeling.
+
+----
+
+## 2. Business Processes
+The Data Warehouse focuses on the following process:
+
+- Financial transactions (event-based)
+
+---
+
+## 3. Business Questions
+### Questions answered by this model
+
+- What is the total transaction volume by type over time?
+- What is the fraud rate by category, state, or customer profile?
+- What is the average transaction value per customer?
+- What is the distribution of transaction values per customer?
+
+### Questions out of scope — data not available
+
+- What is the average account balance per period?
+- How many accounts are active vs inactive over time?
+
+---
+
+## 4. Definitions
+- A transaction is a single financial event (e.g., a purchase at a merchant).
+- A fraudulent transaction is one flagged as is_fraud = 1 in the dataset.
+- Customer is identified by their credit card number (cc_num).
+
+---
+
+## 5. Grain
+Fact:
+- fact_transactions → 1 row per transaction
+
+Dimensions:
+- dim_customer → 1 row per customer (identified by cc_num)
+- dim_merchant → 1 row per merchant
+- dim_date → 1 row per day
+
+---
+
+## 6. Assumptions
+- Customer is identified by credit card number (cc_num).
+- Merchant is identified by name and category.
+- Transactions are immutable events.
+- The dataset was originally split for ML purposes; only fraudTrain.csv is used.
+
+---
+
+## 7. Models
+#### fact_transactions
+- transaction_id (trans_num)
+- customer_id (cc_num)
+- merchant_id
+- date_id
+- amount (amt)
+- is_fraud
+
+#### dim_customer
+- customer_id (cc_num)
+- first_name, last_name
+- gender
+- date_of_birth (dob)
+- job
+- city, state, zip
+
+#### dim_merchant
+- merchant_id
+- merchant_name (merchant)
+- category
+- merch_lat, merch_long
+
+#### dim_date
+- date_id
+- date
+- year, month, day
+- day_of_week
+- hour
+
+## 8. Project Structure
+```TEXT
+FINANCE-DW-MODELING/
+│
+├── data/
+│   └── fraudTrain.csv
+│
+├── sql/
+│   ├── schema/
+│   │   └── create_tables.sql
+│   │
+│   ├── dimensions/
+│   │   ├── dim_customer.sql
+│   │   ├── dim_merchant.sql
+│   │   └── dim_date.sql
+│   │
+│   └── facts/
+│       └── fact_transactions.sql
+│
+├── README.md
+└── .gitignore
+```
