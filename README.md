@@ -114,3 +114,21 @@ FINANCE-DW-MODELING/
 ├── README.md
 └── .gitignore
 ```
+
+---
+
+## 9.How to run
+Execute the scripts in the following order:
+
+1. `sql/schema/staging.sql` — creates staging schema and raw table
+2. `sql/schema/dw.sql` — creates dw schema and dimensional tables
+3. `sql/dimensions/dim_date.sql` — populates date dimension
+4. `sql/dimensions/dim_customer.sql` — populates customer dimension
+5. `sql/dimensions/dim_merchant.sql` — populates merchant dimension
+6. `sql/facts/fact_transactions.sql` — populates fact table
+
+Or run all at once:
+```bash
+psql -U your_user -d your_database -f sql/run.sql
+```
+
