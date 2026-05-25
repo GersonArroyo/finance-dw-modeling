@@ -1,8 +1,7 @@
 --- dimCustomer ---
---- trans_date_trans_time,cc_num,merchant,category,amt,first,last,gender,
---- street,city,state,zip,lat,long,city_pop,
---- job,dob,trans_num,unix_time,merch_lat,merch_long,is_fraud
-create table dimCustomer (
+--- not in use columns: trans_date_trans_time, unix_time
+create schema dw;
+create table dw.dimCustomer (
     cc_num varchar(255) primary key,
     first varchar(255),
     last varchar(255),
@@ -19,7 +18,7 @@ create table dimCustomer (
 );
 
 --- dimDate ---
-create table dimDate (
+create table dw.dimDate (
     dateKey int primary key,
     hour int,
     dayOfWeek varchar(20),
@@ -31,7 +30,7 @@ create table dimDate (
 );
 
 --- dimMerchant ---
-create table dimMerchant (
+create table dw.dimMerchant (
     merchant_id serial primary key,
     merchant_name varchar(255) not null,
     category varchar(255),
@@ -40,11 +39,11 @@ create table dimMerchant (
 );
 
 --- factTransaction ---
-create table factTransaction (
+create table dw.factTransaction (
     trans_num varchar(255) primary key, 
     amt decimal(10, 2),
     is_fraud boolean,
-    cc_num varchar(255) references dimCustomer(cc_num),
-    merchant_id int references dimMerchant(merchant_id),
-    date_key int references dimDate(dateKey)
+    cc_num varchar(255) references dw.dimCustomer(cc_num),
+    merchant_id int references dw.dimMerchant(merchant_id),
+    date_key int references dw.dimDate(dateKey)
 );
