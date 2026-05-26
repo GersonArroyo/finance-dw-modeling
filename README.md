@@ -1,9 +1,9 @@
 # Fintech Data Warehouse - Dimensional Modeling
 
 ## 1. Context
-This project simulates a Data Warehouse for a fintech company that manages customer accounts and financial transactions.
+This project simulates a Data Warehouse for a fintech company that processes financial transactions. The goal is to design a dimensional model that supports analytical queries related to transactions and fraud detection.
 
-The goal is to design a dimensional model that supports analytical queries related to transactions and fraud detection.
+This project focuses exclusively on dimensional modeling — schema design, grain definition, and pipeline structure. Query implementation is out of scope and would be handled by the analytics or BI layer built on top of this model.
 
 ---
 
@@ -52,6 +52,9 @@ Dimensions:
 - dim_merchant → 1 row per merchant
 - dim_date → 1 row per day
 
+![Star Schema](assets/star_schema.png)
+> Diagram generated with [dbdiagram.io](https://dbdiagram.io)
+
 ---
 
 ## 6. Assumptions
@@ -83,7 +86,8 @@ Dimensions:
 - merchant_id
 - merchant_name (merchant)
 - category
-- merch_lat, merch_long
+- merch_lat
+- merch_long
 
 #### dim_date
 - date_id
@@ -142,3 +146,10 @@ Or run all at once:
 ```bash
 psql -U your_user -d your_database -f sql/run.sql
 ```
+
+## 10. Future scope
+
+- Analytical queries answering the business questions in section 3
+- Data quality checks before loading (nulls, duplicates, type validation)
+- Slowly Changing Dimensions (SCD) — handling customer address changes over time
+- Additional fact table for merchant aggregations
