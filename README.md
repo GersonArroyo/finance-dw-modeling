@@ -67,7 +67,7 @@ Dimensions:
 - transaction_id (trans_num)
 - customer_id (cc_num)
 - merchant_id
-- date_id
+- dateKey
 - amount (amt)
 - is_fraud
 
@@ -93,32 +93,43 @@ Dimensions:
 - hour
 
 ## 8. Project Structure
-```TEXT
+```
 FINANCE-DW-MODELING/
 │
-├── data/
-│   └── fraudTrain.csv
+├── pgadmin/
+│   └── servers.json
 │
 ├── sql/
+│   ├── run.sql
 │   ├── schema/
-│   │   └── create_tables.sql
-│   │
+│   │   ├── staging.sql
+│   │   └── dw.sql
 │   ├── dimensions/
 │   │   ├── dim_customer.sql
 │   │   ├── dim_merchant.sql
 │   │   └── dim_date.sql
-│   │
 │   └── facts/
 │       └── fact_transactions.sql
 │
+├── .env.example
+├── docker-compose.yml
 ├── README.md
 └── .gitignore
 ```
 
 ---
 
-## 9.How to run
-Execute the scripts in the following order:
+## 9. How to run
+
+### Prerequisites
+Copy `.env.example` to `.env` and fill in your credentials before running.
+
+Then start the database:
+```bash
+docker-compose up -d
+```
+
+### Run order
 
 1. `sql/schema/staging.sql` — creates staging schema and raw table
 2. `sql/schema/dw.sql` — creates dw schema and dimensional tables
@@ -131,4 +142,3 @@ Or run all at once:
 ```bash
 psql -U your_user -d your_database -f sql/run.sql
 ```
-
