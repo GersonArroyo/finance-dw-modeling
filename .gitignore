@@ -4,3 +4,4 @@ logs/*
 .dbt/
 dbt_packages/
 target/
+.env
