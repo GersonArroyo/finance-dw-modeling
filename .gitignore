@@ -5,3 +5,4 @@ logs/*
 dbt_packages/
 target/
 .env
+pgadmin/servers.json
