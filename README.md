@@ -1,4 +1,4 @@
-# Fintech Data Warehouse - Dimensional Modeling
+# Finance Data Warehouse - Dimensional Modeling
 
 ## 1. Context
 This project simulates a Data Warehouse for a fintech company that processes financial transactions. The goal is to design a dimensional model that supports analytical queries related to transactions and fraud detection.
@@ -12,7 +12,7 @@ https://www.kaggle.com/datasets/kartik2112/fraud-detection
 
 Attention: this dataset was originally created for ML training purposes by kartik2112. For this project, the train/test split was disregarded as it is irrelevant for dimensional modeling.
 
-----
+---
 
 ## 2. Business Processes
 The Data Warehouse focuses on the following process:
@@ -86,25 +86,31 @@ Dimensions:
 - merchant_id
 - merchant_name (merchant)
 - category
-- merch_lat
-- merch_long
+- merch_lat, merch_long
 
 #### dim_date
-- date_id
+- dateKey
 - date
 - year, month, day
-- day_of_week
-- hour
+
+---
 
 ## 8. Project Structure
 ```
 FINANCE-DW-MODELING/
 │
+├── assets/
+|   ├── finance_dw_star_schema.svg
+│   └── star_schema.png
+│
+├── data/
+│   └── fraudTrain.csv (not tracked — see setup below)
+│
 ├── pgadmin/
 │   └── servers.json
 │
 ├── sql/
-│   ├── run.sql
+│   ├── init.sh
 │   ├── schema/
 │   │   ├── staging.sql
 │   │   └── dw.sql
@@ -125,27 +131,24 @@ FINANCE-DW-MODELING/
 
 ## 9. How to run
 
-### Prerequisites
-Copy `.env.example` to `.env` and fill in your credentials before running.
+### 1. Dataset
+Download the dataset from [Kaggle](https://www.kaggle.com/datasets/kartik2112/fraud-detection), create a `data/` folder in the project root and place `fraudTrain.csv` inside it.
 
-Then start the database:
+### 2. Environment
+Copy `.env.example` to `.env` and fill in your credentials:
+```bash
+cp .env.example .env
+```
+Copy `pgadmin/servers.json.example` to `pgadmin/servers.json` and fill in your credentials.
+
+### 3. Start
 ```bash
 docker-compose up -d
 ```
 
-### Run order
+All schemas, tables, and data will be loaded automatically on first start.
 
-1. `sql/schema/staging.sql` — creates staging schema and raw table
-2. `sql/schema/dw.sql` — creates dw schema and dimensional tables
-3. `sql/dimensions/dim_date.sql` — populates date dimension
-4. `sql/dimensions/dim_customer.sql` — populates customer dimension
-5. `sql/dimensions/dim_merchant.sql` — populates merchant dimension
-6. `sql/facts/fact_transactions.sql` — populates fact table
-
-Or run all at once:
-```bash
-psql -U your_user -d your_database -f sql/run.sql
-```
+---
 
 ## 10. Future scope
 
